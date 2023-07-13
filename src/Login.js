@@ -1,13 +1,15 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View , TextInput} from "react-native";
 import React from "react";
 import Background from "./Background";
 import { darkGreen } from "./Constants";
-import Field from "./Field";
+
 import Btn from "./Btn";
-import { useState } from "react";
+
 
 
 const Login = (props) => {
+
+
   return (
     <Background>
       <View
@@ -44,8 +46,36 @@ const Login = (props) => {
           <Text style={{ color: "grey", fontSize: 15, fontWeight: "bold" }}>
             Login to your account
           </Text>
-          <Field placeholder={"Email..."} keyboardType={"email-address"} />
-          <Field placeholder={"Password"} secureTextEntry={true} />
+          <TextInput
+            style={{
+              borderRadius: 100,
+              color: darkGreen,
+              paddingHorizontal: 28,
+              width: "80%",
+              height: 50,
+              backgroundColor: "rgb(220,220,220)",
+              marginTop: 20,
+            }}
+            placeholderTextColor={darkGreen}
+            placeholder={"Email"}
+            keyboardType={"email-address"}
+          ></TextInput>
+
+           <TextInput
+            style={{
+              borderRadius: 100,
+              color: darkGreen,
+              paddingHorizontal: 28,
+              width: "80%",
+              height: 50,
+              backgroundColor: "rgb(220,220,220)",
+              marginTop: 20,
+            }}
+            placeholderTextColor={darkGreen}
+            placeholder={"Password"}
+            secureTextEntry={true}
+          ></TextInput>
+
           <View
             style={{ alignItems: "flex-end", width: "80%", paddingTop: 10 }}
           >
