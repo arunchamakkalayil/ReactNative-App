@@ -2,14 +2,43 @@ import { Text, TouchableOpacity, View , TextInput} from "react-native";
 import React from "react";
 import Background from "./Background";
 import { darkGreen } from "./Constants";
+import { useState, useEffect } from "react";
 
 import Btn from "./Btn";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 
 
 const Login = (props) => {
+  
+  const [checkUser, setCheckUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const onEmailChange = (email) => {setEmail(email)};
+  const onPasswordChange = (password) => { setPassword(password)};
+  useEffect(()=>{
+    const checkData = async() =>{
+        let value = await AsyncStorage.getItem("user") ;
+        setCheckUser(JSON.parse(value))
+        console.log(checkUser)
+     }
+    checkData()
+    
+  },[])
+  const onSubmit=()=>{
+    if(email != '' && password != ''){
+      if( checkUser.email == email && checkUser.password == password){
+        alert('Logged In')
+        props.navigation.navigate('Account')
+      }else{
+        alert('Invalid Email or Password')
+      }
+    }else{
+      alert('enter email and password')
+    }
 
-
+  }
   return (
     <Background>
       <View
@@ -58,7 +87,10 @@ const Login = (props) => {
             }}
             placeholderTextColor={darkGreen}
             placeholder={"Email"}
+            value={email}
             keyboardType={"email-address"}
+            onChangeText={onEmailChange}
+
           ></TextInput>
 
            <TextInput
@@ -74,6 +106,8 @@ const Login = (props) => {
             placeholderTextColor={darkGreen}
             placeholder={"Password"}
             secureTextEntry={true}
+            value={password}
+            onChangeText={onPasswordChange}
           ></TextInput>
 
           <View
@@ -90,10 +124,7 @@ const Login = (props) => {
               bgColor={darkGreen}
               textColor="white"
               btnLabel={"Login"}
-              Press={() =>{
-                alert("Logged In")
-                props.navigation.navigate("Account")     
-              } }
+              Press={onSubmit}
             />
           </View>
           <View

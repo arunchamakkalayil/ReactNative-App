@@ -6,6 +6,8 @@ import { darkGreen } from "./Constants";
 import Btn from "./Btn";
 import { useState , useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
 const Signup = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,22 +33,28 @@ useEffect(()=>{
     password:password
 
 }
-console.log(checkEmail)
-try {
-    
+
+
+if(email != '' && password != ''){
+   try{
     if (checkEmail != null && checkEmail.email == email ){
         
-        alert('User already registered')
-    }
-    else {
-        await AsyncStorage.setItem('user',JSON.stringify(user))
-        alert("Account Created");
-       
-                    props.navigation.navigate("Login");
-    }
-} catch (error) {
-console.log(error)
+      alert('User already registered')
+  }
+  else {
+      await AsyncStorage.setItem('user',JSON.stringify(user))
+      alert("Account Created");
+     
+                  props.navigation.navigate("Login");
+  }
+
+   } catch(error){
+    console.log(error)
+   }
+} else{
+  alert('Enter details correctly')
 }
+    
 
   
 
@@ -168,7 +176,7 @@ console.log(error)
           </View>
 
           <View style={{ paddingTop: 130 }}>
-            <Btn
+             <Btn
               bgColor={darkGreen}
               textColor="white"
               btnLabel={"Signup"}

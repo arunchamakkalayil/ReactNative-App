@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { darkGreen } from "./Constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Btn from "./Btn";
@@ -8,10 +8,26 @@ import Btn from "./Btn";
 const Account = (props) => {
   let [userdata, setUserData] = useState("");
   const findUser = async () => {
-    let data = await AsyncStorage.getItem("user");
+    try{
+      let data = await AsyncStorage.getItem("user");
+      setUserData(JSON.parse(data));
+    }catch (error){
+console.log(error)
+    }
+    
 
-    setUserData(JSON.parse(data));
+    
   };
+  
+  const removeUser = () =>{
+    try{
+      AsyncStorage.removeItem('user')
+      props.navigation.navigate("Login");
+    }catch(error){
+      console.log(error)
+    }
+    
+  }
   console.log(userdata);
   return (
     <View
@@ -76,7 +92,14 @@ const Account = (props) => {
           btnLabel={"User Data"}
           Press={findUser}
         />
+        <Btn
+          bgColor='red'
+          textColor="white"
+          btnLabel={"Logout"}
+          Press={removeUser}
+        />
       </View>
+      
     </View>
   );
 };
