@@ -1,65 +1,59 @@
-import { Text, TouchableOpacity, View, TextInput,Toast } from "react-native";
+import { Text, TouchableOpacity, View, TextInput, Toast } from "react-native";
 import React from "react";
 import Background from "./Background";
 import { darkGreen } from "./Constants";
 
 import Btn from "./Btn";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 
 const Signup = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkEmail, setCheckEmail] = useState("");
- 
-  const onNameChange = (text) => {setName(text) };
-  const onEmailChange = (email) => {setEmail(email)};
-  const onPasswordChange = (password) => { setPassword(password)};
 
-useEffect(()=>{
-    const checkData = async() =>{
-        let value = await AsyncStorage.getItem("user") ;
-        setCheckEmail(JSON.parse(value))
-     }
-    checkData()
-    
-},[])
-  const handleSubmit = async() =>{
-  let user ={
-    name: name,
-    email:email,
-    password:password
+  const onNameChange = (text) => {
+    setName(text);
+  };
+  const onEmailChange = (email) => {
+    setEmail(email);
+  };
+  const onPasswordChange = (password) => {
+    setPassword(password);
+  };
 
-}
+  useEffect(() => {
+    const checkData = async () => {
+      let value = await AsyncStorage.getItem("user");
+      setCheckEmail(JSON.parse(value));
+    };
+    checkData();
+  }, []);
+  const handleSubmit = async () => {
+    let user = {
+      name: name,
+      email: email,
+      password: password,
+    };
 
+    if (email != "" && password != "") {
+      try {
+        if (checkEmail != null && checkEmail.email == email) {
+          alert("User already registered");
+        } else {
+          await AsyncStorage.setItem("user", JSON.stringify(user));
+          alert("Account Created");
 
-if(email != '' && password != ''){
-   try{
-    if (checkEmail != null && checkEmail.email == email ){
-        
-      alert('User already registered')
-  }
-  else {
-      await AsyncStorage.setItem('user',JSON.stringify(user))
-      alert("Account Created");
-     
-                  props.navigation.navigate("Login");
-  }
-
-   } catch(error){
-    console.log(error)
-   }
-} else{
-  alert('Enter details correctly')
-}
-    
-
-  
-
-
-  }
+          props.navigation.navigate("Login");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("Enter details correctly");
+    }
+  };
   return (
     <Background>
       <View
@@ -101,10 +95,9 @@ if(email != '' && password != ''){
             placeholder={"Name"}
             value={name}
             onChangeText={onNameChange}
-            
           ></TextInput>
 
-           <TextInput
+          <TextInput
             style={{
               borderRadius: 100,
               color: darkGreen,
@@ -121,7 +114,7 @@ if(email != '' && password != ''){
             onChangeText={onEmailChange}
           ></TextInput>
 
-           <TextInput
+          <TextInput
             style={{
               borderRadius: 100,
               color: darkGreen,
@@ -176,7 +169,7 @@ if(email != '' && password != ''){
           </View>
 
           <View style={{ paddingTop: 130 }}>
-             <Btn
+            <Btn
               bgColor={darkGreen}
               textColor="white"
               btnLabel={"Signup"}
